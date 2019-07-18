@@ -42,7 +42,32 @@ switch ($btn) {
             <?php
         }    
         break;
+    case 'editar':
+        $sql = "SELECT * FROM dialogos_dirigidos WHERE id = '".$id."'";
+        $res3 = mysqli_query($cn,$sql);
+        $form = mysqli_fetch_array($res3);
+        $frase = $form['frase'];
+        $script = $form['script'];
 
+        break;
+
+    case 'actualizar':
+        $sql = "UPDATE dialogos_dirigidos SET frase='".$frase."', script='".$script."' WHERE id='".$id."'";
+        $res3 = mysqli_query($cn,$sql);
+        if($res3){
+            $frase='';
+            $script='';
+            echo "Actualizado con exito";
+        ?>
+            <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Actualizada Correctamente.</span><button type="button" class="close">&times;</button></div>
+        <?php
+        }else{
+            ?>
+                <div class="float alert alert-danger" role="alert"><span>Error al Actualizar Frase.</span></div>
+            <?php
+        }
+
+        break;
     case 'X':
         $sql = "DELETE FROM dialogos_dirigidos WHERE id='".$id."'";
         $res3 = mysqli_query($cn,$sql);
@@ -82,6 +107,20 @@ switch ($btn) {
             }   
         }    
         break;
+    case 'desactivar':
+        $sql = "UPDATE dialogos_dirigidos SET status='N' WHERE id = '".$id."'";
+        $res3 = mysqli_query($cn,$sql);
+        if($res3){
+            echo "Actualizado con exito";
+            ?>
+                <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Desactivada Correctamente.</span><button type="button" class="close">&times;</button></div>
+            <?php
+        }else{
+            ?>
+                <div class="float alert alert-danger" role="alert"><span>Error al Desactivar Frase.</span></div>
+            <?php
+        }    
+        break;
     default:
         # code...
         break;
@@ -95,7 +134,8 @@ switch ($btn) {
         <form action="index.php" method="post">
             <div class="form-group">
                 <div>
-                    <p>Dialogo</p><input class="form-control" type="text" name='frase'>
+                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                    <p>Dialogo</p><input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
                 </div>
             </div>
             <div class="form-group">
@@ -105,10 +145,14 @@ switch ($btn) {
                         $sql = "SELECT * FROM scripts WHERE status = 'S'";
                         $res1 = mysqli_query($cn,$sql);
                         if($res1){
-                            while($opt = mysqli_fetch_array($res1)){        
+                            while($opt = mysqli_fetch_array($res1)){
+                                $x= "";
+                                if($script==$opt['script']){
+                                    $x="selected";
+                                }
                                 ?>
                                 
-                                <option value="<?php echo $opt['script']; ?>"><?php echo $opt['nombre']; ?></option>
+                                <option value="<?php echo $opt['script']; ?>" $x><?php echo $opt['nombre']; ?></option>
 
                                 <?php
                             }
@@ -120,8 +164,9 @@ switch ($btn) {
             <?php  if($btn!="editar"){  ?>
                 <div class="text-right"><button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button></div>
             <?php }else{ ?>
-                <div class="text-right"><button id="boton" class="btn btn-success" name="btn" value="agregar" type="submit">Actualizar frase</button></div>
+                <div class="text-right"><button id="boton" class="btn btn-success" name="btn" value="actualizar" type="submit">Actualizar frase</button></div>
             <?php } ?>
+            
         </form>
     </div>
     <div class="container">
@@ -150,15 +195,17 @@ switch ($btn) {
                             <form action="index.php" method="post">
                                 <td>
                                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
+
                                     <div class="d-flex p-1 bg-secondary text-white">
-                                    <?php if($data['status']=="N"){ ?>
-                                        <div class="p-2"><button type="submit" name="btn" value="activar" class="btn btn-success">🗣️</button>></div>
-                                    <?php }else{ ?>
+                                        <?php if($data['status']=="N"){ ?>
+                                        <div class="p-2"><button type="submit" name="btn" value="activar" class="btn btn-success">🗣️</button></div>
+                                        <?php }else{ ?>
                                         <div class="p-2"><button type="submit" name="btn" value="desactivar" class="btn btn-warning">🗣️</button></div>
-                                     <?php } ?>
-                                    <div class="p-2"><button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button></div>
-                                    <div class="p-2"><button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button></div>
-                                     </div>
+                                        <?php } ?>
+                                        <div class="p-2"><button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button></div>
+                                        <div class="p-2"><button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button></div>
+                                    </div>
+
                                 </td>
                             </form>
                         </tr>
