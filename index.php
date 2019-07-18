@@ -77,9 +77,10 @@ if (!$cn) {
                             <td><?php echo $data['id'] ?></td>
                             <td><?php echo $data['frase']; ?></td>
                             <td>
-                                <?php 
-
-                                ?>
+                                
+                            <button type="button" class="btn btn-warning"> </button>
+                            <button type="button" class="btn btn-success"> </button>
+                            <button type="button" class="btn btn-primary"> </button>
                             </td>
                         </tr>
                     <?php
