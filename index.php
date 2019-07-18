@@ -4,10 +4,31 @@ $usuario = "root";
 $pwd = "";
 $dbase = "dbinteligentpos";
 
+
 $cn = new mysqli($servidor, $usuario, $pwd, $dbase);
 if (!$cn) {
-    echo "No hay conexion con la base de kdatos";
+    echo "No hay conexion con la base de datos";
 } 
+
+$btn = isset($_REQUEST['btn'])?$_REQUEST['btn']:null;
+$frase = isset($_REQUEST['frase'])?$_REQUEST['frase']:null;
+$script = isset($_REQUEST['script'])?$_REQUEST['script']:null;
+
+
+if($btn=="agregar"){
+    $sql = "INSERT INTO dialogos_dirigidos (frase,script) VALUES('".$frase."','".$script."')";
+    $res3 = mysqli_query($cn,$sql);
+    if($res3){
+        ?>
+            <div class="miAlerta alert alert-success" role="alert" id="alert_success"><span>Frase creada correctamente.</span><button type="button" class="close">&times;</button></div>
+        <?php
+    }else{
+        ?>
+            <div class="float alert alert-danger" role="alert"><span>Error al crear la frase.</span></div>
+        <?php
+    }
+
+}
 
 ?>
 <!DOCTYPE html>
@@ -24,18 +45,16 @@ if (!$cn) {
 
 <body>
     <div class="container">
-        <div class="miAlerta alert alert-success" role="alert" id="alert_success"><span>Frase creada correctamente.</span><button type="button" class="close">&times;</button></div>
-        <div class="float alert alert-danger" role="alert"><span>Error al crear la frase.</span></div>
         <h1>Creación de nuevas frases</h1>
-        <form>
+        <form action="index.php" method="get">
             <div class="form-group">
                 <div>
-                    <p>Dialogo</p><input class="form-control" type="text">
+                    <p>Dialogo</p><input class="form-control" type="text" name='frase'>
                 </div>
             </div>
             <div class="form-group">
                 <div>
-                    <select class="form-control">
+                    <select class="form-control" name='script'>
                         <?php 
                         $sql = "SELECT * FROM scripts WHERE status = 'S'";
                         $res1 = mysqli_query($cn,$sql);
@@ -52,7 +71,7 @@ if (!$cn) {
                     </select>
                 </div>
             </div>
-            <div class="text-right"><button id="boton" class="btn btn-primary" name="btn" type="button">Crear frase</button></div>
+            <div class="text-right"><button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button></div>
         </form>
     </div>
     <div class="container">
@@ -62,7 +81,8 @@ if (!$cn) {
                 <thead>
                     <tr>
                         <th style="width: 10%;">ID</th>
-                        <th>Texto</th>
+                        <th>FRASE</th>
+                        <th>ACCION</th>
                         <th style="width: 10%;">ACTIVO</th>
                     </tr>
                 </thead>
@@ -76,6 +96,7 @@ if (!$cn) {
                         <tr>
                             <td><?php echo $data['id'] ?></td>
                             <td><?php echo $data['frase']; ?></td>
+                            <td><?php echo $data['script']; ?></td>
                             <td>
                                 <?php 
 
