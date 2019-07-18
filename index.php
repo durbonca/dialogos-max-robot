@@ -119,10 +119,14 @@ switch ($btn) {
                             <td><?php echo $data['script']; ?></td>
                             <form action="index.php" method="post">
                                 <td style="width: 100px;">
+
                                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
-                                    <button type="submit" name="btn" value="hablar" class="btn btn-success">🗣️</button>
-                                    <button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button>
-                                    <button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button>
+
+                                    <div class="d-flex p-1 bg-secondary text-white">
+                                        <div class="p-2"><button type="submit" name="btn" value="hablar" class="btn btn-success">🗣️</button></div>
+                                        <div class="p-2"><button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button></div>
+                                        <div class="p-2"><button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button></div>
+                                    </div>
                                 </td>
                             </form>
                         </tr>
