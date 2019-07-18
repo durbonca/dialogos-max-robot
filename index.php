@@ -10,25 +10,45 @@ if (!$cn) {
     echo "No hay conexion con la base de datos";
 } 
 
+$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
 $btn = isset($_REQUEST['btn'])?$_REQUEST['btn']:null;
 $frase = isset($_REQUEST['frase'])?$_REQUEST['frase']:null;
 $script = isset($_REQUEST['script'])?$_REQUEST['script']:null;
 
+switch ($btn) {
+    case 'agregar':
+        $sql = "INSERT INTO dialogos_dirigidos (frase,script) VALUES('".$frase."','".$script."')";
+        $res3 = mysqli_query($cn,$sql);
+        if($res3){
+            ?>
+                <div class="miAlerta alert alert-success" role="alert" id="alert_success"><span>Frase creada correctamente.</span><button type="button" class="close">&times;</button></div>
+            <?php
+        }else{
+            ?>
+                <div class="float alert alert-danger" role="alert"><span>Error al crear la frase.</span></div>
+            <?php
+        }    
+        break;
 
-if($btn=="agregar"){
-    $sql = "INSERT INTO dialogos_dirigidos (frase,script) VALUES('".$frase."','".$script."')";
-    $res3 = mysqli_query($cn,$sql);
-    if($res3){
-        ?>
-            <div class="miAlerta alert alert-success" role="alert" id="alert_success"><span>Frase creada correctamente.</span><button type="button" class="close">&times;</button></div>
-        <?php
-    }else{
-        ?>
-            <div class="float alert alert-danger" role="alert"><span>Error al crear la frase.</span></div>
-        <?php
-    }
-
+    case 'X':
+        $sql = "DELETE FROM dialogos_dirigidos WHERE id='".$id."'";
+        $res3 = mysqli_query($cn,$sql);
+        if($res3){
+            ?>
+                <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Eliminada.</span><button type="button" class="close">&times;</button></div>
+            <?php
+        }else{
+            ?>
+                <div class="float alert alert-danger" role="alert"><span>Error al eliminar la frase.</span></div>
+            <?php
+        }    
+        break;
+    
+    default:
+        # code...
+        break;
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -97,12 +117,14 @@ if($btn=="agregar"){
                             <td><?php echo $data['id'] ?></td>
                             <td><?php echo $data['frase']; ?></td>
                             <td><?php echo $data['script']; ?></td>
-                            <td>
-                                
-                            <button type="button" class="btn btn-warning"> </button>
-                            <button type="button" class="btn btn-success"> </button>
-                            <button type="button" class="btn btn-primary"> </button>
-                            </td>
+                            <form action="index.php" method="post">
+                                <td>
+                                    <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
+                                    <button type="submit" name="btn" value="hablar" class="btn btn-success">Hablar</button>
+                                    <button type="submit" name="btn" value="editar" class="btn btn-primary">Actualizar</button>
+                                    <button type="submit" name="btn" value="X" class="btn btn-danger">X</button>
+                                </td>
+                            </form>
                         </tr>
                     <?php
                     }
