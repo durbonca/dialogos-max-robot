@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>tabla</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
 <?php
 $servidor = "localhost";
 $usuario = "root";
@@ -20,6 +32,7 @@ switch ($btn) {
         $sql = "INSERT INTO dialogos_dirigidos (frase,script) VALUES('".$frase."','".$script."')";
         $res3 = mysqli_query($cn,$sql);
         if($res3){
+            echo "hay frases activas";
             ?>
                 <div class="miAlerta alert alert-success" role="alert" id="alert_success"><span>Frase creada correctamente.</span><button type="button" class="close">&times;</button></div>
             <?php
@@ -33,7 +46,8 @@ switch ($btn) {
     case 'X':
         $sql = "DELETE FROM dialogos_dirigidos WHERE id='".$id."'";
         $res3 = mysqli_query($cn,$sql);
-        if($res3){
+        
+        if(mysqli_affected_rows($cn) > 0){
             ?>
                 <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Eliminada.</span><button type="button" class="close">&times;</button></div>
             <?php
@@ -44,6 +58,30 @@ switch ($btn) {
         }    
         break;
     
+    case 'activar':
+        $sql = "SELECT * FROM dialogos_dirigidos WHERE status='S'";
+        $res3 = mysqli_query($cn,$sql);
+        if( mysqli_num_rows($res3) > 0){
+            echo "hay frases activas por lo que no se puede activar dos al mismo tiempo";
+
+            ?>
+                <div class="miAlerta alert alert-danger" role="alert" id="alert_warning"><span>Hay Frases Activas aun no se puede activar dos... </span><button type="button" class="close">&times;</button></div>
+            <?php
+        }else{
+            echo $sql = "UPDATE dialogos_dirigidos SET status='S' WHERE id = '".$id."'";
+            $res4 = mysqli_query($cn,$sql);
+            if($res3){
+                echo "Actulizado con exito";
+            ?>
+                <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Activada Correctamente.</span><button type="button" class="close">&times;</button></div>
+            <?php
+            }else{
+                ?>
+                    <div class="float alert alert-danger" role="alert"><span>Error al Activar Frase.</span></div>
+                <?php
+            }   
+        }    
+        break;
     default:
         # code...
         break;
@@ -51,18 +89,6 @@ switch ($btn) {
 
 
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>tabla</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-
 <body>
     <div class="container">
         <h1>Creación de nuevas frases</h1>
@@ -91,7 +117,11 @@ switch ($btn) {
                     </select>
                 </div>
             </div>
-            <div class="text-right"><button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button></div>
+            <?php  if($btn!="editar"){  ?>
+                <div class="text-right"><button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button></div>
+            <?php }else{ ?>
+                <div class="text-right"><button id="boton" class="btn btn-success" name="btn" value="agregar" type="submit">Actualizar frase</button></div>
+            <?php } ?>
         </form>
     </div>
     <div class="container">
@@ -120,7 +150,11 @@ switch ($btn) {
                             <form action="index.php" method="post">
                                 <td style="width: 100px;">
                                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
-                                    <button type="submit" name="btn" value="hablar" class="btn btn-success">🗣️</button>
+                                    <?php if($data['status']=="N"){ ?>
+                                        <button type="submit" name="btn" value="activar" class="btn btn-success">🗣️</button>
+                                    <?php }else{ ?>
+                                        <button type="submit" name="btn" value="desactivar" class="btn btn-warning">🗣️</button>
+                                     <?php } ?>
                                     <button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button>
                                     <button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button>
                                 </td>
