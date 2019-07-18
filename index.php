@@ -46,7 +46,7 @@ if($btn=="agregar"){
 <body>
     <div class="container">
         <h1>Creación de nuevas frases</h1>
-        <form action="index.php" method="get">
+        <form action="index.php" method="post">
             <div class="form-group">
                 <div>
                     <p>Dialogo</p><input class="form-control" type="text" name='frase'>
