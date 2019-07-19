@@ -11,16 +11,11 @@
 </head>
 
 <?php
-$servidor = "localhost";
-$usuario = "root";
-$pwd = "";
-$dbase = "dbinteligentpos";
-$tabla_cliente = "dialogos_dirigidos";
+include ("cls/clsConexion.php");
 
-$cn = new mysqli($servidor, $usuario, $pwd, $dbase);
-if (!$cn) {
-    echo "No hay conexion con la base de datos";
-} 
+$DbConect = new ConexionSQL();
+
+$tabla_cliente = "dialogos_dirigidos";
 
 $id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
 $btn = isset($_REQUEST['btn'])?$_REQUEST['btn']:null;
@@ -29,8 +24,8 @@ $script = isset($_REQUEST['script'])?$_REQUEST['script']:null;
 
 switch ($btn) {
     case 'agregar':
-        $sql = "INSERT INTO ".$tabla_cliente." (frase,script) VALUES('".$frase."','".$script."')";
-        $res3 = mysqli_query($cn,$sql);
+        $sql = "INSERT INTO ".$tabla_cliente." (frase,script) VALUES('".$frase."',".$script.")";
+        $res3 = $DbConect->Consulta($sql);
         if($res3){
             echo "hay frases activas";
             ?>
@@ -44,16 +39,16 @@ switch ($btn) {
         break;
     case 'editar':
         $sql = "SELECT * FROM ".$tabla_cliente." WHERE id = '".$id."'";
-        $res3 = mysqli_query($cn,$sql);
-        $form = mysqli_fetch_array($res3);
+        $res3 = $DbConect->Consulta($sql);
+        $form = $DbConect->ExtraerDatos($res3);
         $frase = $form['frase'];
         $script = $form['script'];
 
         break;
 
     case 'actualizar':
-        $sql = "UPDATE ".$tabla_cliente." SET frase='".$frase."', script='".$script."' WHERE id='".$id."'";
-        $res3 = mysqli_query($cn,$sql);
+        $sql = "UPDATE ".$tabla_cliente." SET frase='".$frase."', script=".$script." WHERE id='".$id."'";
+        $res3 = $DbConect->Consulta($sql);
         if($res3){
             $frase='';
             $script='';
@@ -70,9 +65,9 @@ switch ($btn) {
         break;
     case 'X':
         $sql = "DELETE FROM ".$tabla_cliente." WHERE id='".$id."'";
-        $res3 = mysqli_query($cn,$sql);
+        $res3 = $DbConect->Consulta($sql);
         
-        if(mysqli_affected_rows($cn) > 0){
+        if($DbConect->FilasAfectadas() > 0){
             ?>
                 <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Eliminada.</span><button type="button" class="close">&times;</button></div>
             <?php
@@ -85,16 +80,16 @@ switch ($btn) {
     
     case 'activar':
         $sql = "SELECT * FROM ".$tabla_cliente." WHERE status='S'";
-        $res3 = mysqli_query($cn,$sql);
-        if( mysqli_num_rows($res3) > 0){
+        $res3 = $DbConect->Consulta($sql);
+        if( $DbConect->nroreg($res3) > 0){
             echo "hay frases activas por lo que no se puede activar dos al mismo tiempo";
 
             ?>
                 <div class="miAlerta alert alert-danger" role="alert" id="alert_warning"><span>Hay Frases Activas aun no se puede activar dos... </span><button type="button" class="close">&times;</button></div>
             <?php
         }else{
-            echo $sql = "UPDATE ".$tabla_cliente." SET status='S' WHERE id = '".$id."'";
-            $res4 = mysqli_query($cn,$sql);
+            $sql = "UPDATE ".$tabla_cliente." SET status='S' WHERE id = '".$id."'";
+            $res3 = $DbConect->Consulta($sql);
             if($res3){
                 echo "Actulizado con exito";
             ?>
@@ -109,8 +104,8 @@ switch ($btn) {
         break;
     case 'desactivar':
         $sql = "UPDATE ".$tabla_cliente." SET status='N' WHERE id = '".$id."'";
-        $res3 = mysqli_query($cn,$sql);
-        if($res3){
+        $res3 = $DbConect->Consulta($sql);
+        if($DbConect->FilasAfectadas()>0){
             echo "Actualizado con exito";
             ?>
                 <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Desactivada Correctamente.</span><button type="button" class="close">&times;</button></div>
@@ -145,17 +140,17 @@ switch ($btn) {
                 <div>
                     <select class="form-control" name='script'>
                         <?php 
-                        $sql = "SELECT * FROM scripts WHERE status = 'S'";
-                        $res1 = mysqli_query($cn,$sql);
+                        $sql = "SELECT id,nombre FROM scripts WHERE status = 'S'";
+                        $res1 = $DbConect->Consulta($sql);
                         if($res1){
-                            while($opt = mysqli_fetch_array($res1)){
+                            while($opt = $DbConect->ExtraerDatos($res1)){
                                 $x= "";
                                 if($script==$opt['script']){
                                     $x="selected";
                                 }
                                 ?>
                                 
-                                <option value="<?php echo $opt['script']; ?>" $x><?php echo $opt['nombre']; ?></option>
+                                <option value="<?php echo $opt['id']; ?>" $x><?php echo $opt['nombre']; ?></option>
 
                                 <?php
                             }
@@ -186,15 +181,15 @@ switch ($btn) {
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT * FROM ".$tabla_cliente." WHERE 1";
-                $res2 = mysqli_query($cn,$sql);
+                echo $sql = "SELECT d.*,s.nombre FROM ".$tabla_cliente." d INNER JOIN scripts s ON d.id=s.id";
+                $res2 = $DbConect->Consulta($sql);
                 if($res2){
-                    while($data = mysqli_fetch_array($res2)){
+                    while($data = $DbConect->ExtraerDatos($res2)){
                     ?>
                         <tr>
                             <td><?php echo $data['id'] ?></td>
                             <td><?php echo $data['frase']; ?></td>
-                            <td><?php echo $data['script']; ?></td>
+                            <td><?php echo $data['nombre']; ?></td>
                             <form action="index.php" method="post">
                                 <td>
                                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
