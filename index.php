@@ -128,7 +128,7 @@ switch ($btn) {
 
 
 ?>
-<body>
+<body style="background:black; color: white;">
     <div class="container">
         <form method="post">
 			<h1>Creación de nuevas frases</h1>
