@@ -13,7 +13,6 @@
 
 
 -- Volcando estructura de base de datos para dbinteligentpos
-DROP DATABASE IF EXISTS `dbinteligentpos`;
 CREATE DATABASE IF NOT EXISTS `dbinteligentpos` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `dbinteligentpos`;
 
@@ -21,14 +20,31 @@ USE `dbinteligentpos`;
 CREATE TABLE IF NOT EXISTS `dialogos_dirigidos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `frase` text NOT NULL,
+  `script` int(11) NOT NULL,
+  `status` char(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`id`),
+  KEY `script` (`script`),
+  CONSTRAINT `fk_dialogos` FOREIGN KEY (`script`) REFERENCES `scripts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COMMENT='Aqui se pondran los dialogos del robot a ser reproducidos por max';
+
+-- Volcando datos para la tabla dbinteligentpos.dialogos_dirigidos: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `dialogos_dirigidos` DISABLE KEYS */;
+REPLACE INTO `dialogos_dirigidos` (`id`, `frase`, `script`, `status`) VALUES
+	(5, 'Chocar los 5 con el cliente', 3, 'N');
+/*!40000 ALTER TABLE `dialogos_dirigidos` ENABLE KEYS */;
+
+-- Volcando estructura para tabla dbinteligentpos.dialogos_dirigidos_resp
+CREATE TABLE IF NOT EXISTS `dialogos_dirigidos_resp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `frase` text NOT NULL,
   `script` varchar(50) DEFAULT NULL,
   `status` char(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 COMMENT='Aqui se pondran los dialogos del robot a ser reproducidos por max';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT COMMENT='Aqui se pondran los dialogos del robot a ser reproducidos por max';
 
--- Volcando datos para la tabla dbinteligentpos.dialogos_dirigidos: ~19 rows (aproximadamente)
-/*!40000 ALTER TABLE `dialogos_dirigidos` DISABLE KEYS */;
-REPLACE INTO `dialogos_dirigidos` (`id`, `frase`, `script`, `status`) VALUES
+-- Volcando datos para la tabla dbinteligentpos.dialogos_dirigidos_resp: ~20 rows (aproximadamente)
+/*!40000 ALTER TABLE `dialogos_dirigidos_resp` DISABLE KEYS */;
+REPLACE INTO `dialogos_dirigidos_resp` (`id`, `frase`, `script`, `status`) VALUES
 	(1, 'Hola, este dialogo esta guardado en tu base de datos', 'get_hand_boy', 'N'),
 	(3, 'Espero te sirva mi aplicacion', 'act_up', 'N'),
 	(4, 'Duran es mi hermano del alma', 'act_down', 'N'),
@@ -47,8 +63,9 @@ REPLACE INTO `dialogos_dirigidos` (`id`, `frase`, `script`, `status`) VALUES
 	(17, 'Mano Derecha medio levantada', 'talk13', 'N'),
 	(18, 'rotar la cara', 'test_rotate_head', 'N'),
 	(19, 'Dar la Mano', 'hello', 'N'),
-	(20, 'te lo juro', 'jurar', 'N');
-/*!40000 ALTER TABLE `dialogos_dirigidos` ENABLE KEYS */;
+	(20, 'te lo juro', 'jurar', 'N'),
+	(21, 'Chocar los 5 con el cliente', 'get_five', 'N');
+/*!40000 ALTER TABLE `dialogos_dirigidos_resp` ENABLE KEYS */;
 
 -- Volcando estructura para tabla dbinteligentpos.scripts
 CREATE TABLE IF NOT EXISTS `scripts` (
