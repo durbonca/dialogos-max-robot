@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>tabla</title>
+    <link rel="stylesheet" type="text/css" href="custom.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <?php
@@ -175,7 +175,7 @@ switch ($btn) {
     <div class="container">
         <h1>Frases actuales</h1>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table-sm">
                 <thead>
                     <tr>
                         <th style="width: 10%;">ID</th>
@@ -199,14 +199,14 @@ switch ($btn) {
                                 <td>
                                     <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
 
-                                    <div class="d-flex p-1 bg-secondary text-white">
+                                    <div class="d-flex text-white">
                                         <?php if($data['status']=="N"){ ?>
-                                        <div class="p-2"><button type="submit" name="btn" value="activar" class="btn btn-success">🗣️</button></div>
+                                        <div class="p-1"><button type="submit" name="btn" value="activar" class="btn btn-success">🗣️</button></div>
                                         <?php }else{ ?>
-                                        <div class="p-2"><button type="submit" name="btn" value="desactivar" class="btn btn-warning">🗣️</button></div>
+                                        <div class="p-1"><button type="submit" name="btn" value="desactivar" class="btn btn-warning">🗣️</button></div>
                                         <?php } ?>
-                                        <div class="p-2"><button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button></div>
-                                        <div class="p-2"><button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button></div>
+                                        <div class="p-1"><button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button></div>
+                                        <div class="p-1"><button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button></div>
                                     </div>
 
                                 </td>
