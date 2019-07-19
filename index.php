@@ -128,7 +128,7 @@ switch ($btn) {
 
 
 ?>
-<body style="background:black; color: white;">
+<body style="background:rgb(48, 48, 48); color: white;">
     <div class="container">
         <form method="post">
 			<h1>Creación de nuevas frases</h1>
@@ -138,7 +138,7 @@ switch ($btn) {
             <div class="form-group">
                 <div>
                     <input type="hidden" name="id" value="<?php echo $id; ?>">
-                    <p>Dialogo</p><input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
+                    <p>Dialogo</p><input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>"></br><p>Scripts</p>
                 </div>
             </div>
             <div class="form-group">
