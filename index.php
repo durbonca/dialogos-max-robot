@@ -64,7 +64,7 @@ switch ($btn) {
 
         break;
     case 'X':
-        $sql = "DELETE FROM ".$tabla_cliente." WHERE id='".$id."'";
+        $sql = "DELETE FROM ".$tabla_cliente." WHERE id='".$id;
         $res3 = $DbConect->Consulta($sql);
         
         if($DbConect->FilasAfectadas() > 0){
@@ -88,7 +88,7 @@ switch ($btn) {
                 <div class="miAlerta alert alert-danger" role="alert" id="alert_warning"><span>Hay Frases Activas aun no se puede activar dos... </span><button type="button" class="close">&times;</button></div>
             <?php
         }else{
-            $sql = "UPDATE ".$tabla_cliente." SET status='S' WHERE id = '".$id."'";
+            $sql = "UPDATE ".$tabla_cliente." SET status='S' WHERE id = '".$id;
             $res3 = $DbConect->Consulta($sql);
             if($res3){
                 echo "Actulizado con exito";
@@ -103,7 +103,7 @@ switch ($btn) {
         }    
         break;
     case 'desactivar':
-        $sql = "UPDATE ".$tabla_cliente." SET status='N' WHERE id = '".$id."'";
+        $sql = "UPDATE ".$tabla_cliente." SET status='N' WHERE id = ".$id;
         $res3 = $DbConect->Consulta($sql);
         if($DbConect->FilasAfectadas()>0){
             echo "Actualizado con exito";
@@ -181,7 +181,7 @@ switch ($btn) {
                 </thead>
                 <tbody>
                 <?php
-                echo $sql = "SELECT d.*,s.nombre FROM ".$tabla_cliente." d INNER JOIN scripts s ON d.id=s.id";
+                $sql = "SELECT d.*,s.nombre FROM ".$tabla_cliente." d INNER JOIN scripts s ON d.script=s.id";
                 $res2 = $DbConect->Consulta($sql);
                 if($res2){
                     while($data = $DbConect->ExtraerDatos($res2)){
