@@ -15,7 +15,7 @@ $servidor = "localhost";
 $usuario = "root";
 $pwd = "";
 $dbase = "dbinteligentpos";
-
+$tabla_cliente = "dialogos_dirigidos";
 
 $cn = new mysqli($servidor, $usuario, $pwd, $dbase);
 if (!$cn) {
@@ -29,7 +29,7 @@ $script = isset($_REQUEST['script'])?$_REQUEST['script']:null;
 
 switch ($btn) {
     case 'agregar':
-        $sql = "INSERT INTO dialogos_dirigidos (frase,script) VALUES('".$frase."','".$script."')";
+        $sql = "INSERT INTO ".$tabla_cliente." (frase,script) VALUES('".$frase."','".$script."')";
         $res3 = mysqli_query($cn,$sql);
         if($res3){
             echo "hay frases activas";
@@ -43,7 +43,7 @@ switch ($btn) {
         }    
         break;
     case 'editar':
-        $sql = "SELECT * FROM dialogos_dirigidos WHERE id = '".$id."'";
+        $sql = "SELECT * FROM ".$tabla_cliente." WHERE id = '".$id."'";
         $res3 = mysqli_query($cn,$sql);
         $form = mysqli_fetch_array($res3);
         $frase = $form['frase'];
@@ -52,7 +52,7 @@ switch ($btn) {
         break;
 
     case 'actualizar':
-        $sql = "UPDATE dialogos_dirigidos SET frase='".$frase."', script='".$script."' WHERE id='".$id."'";
+        $sql = "UPDATE ".$tabla_cliente." SET frase='".$frase."', script='".$script."' WHERE id='".$id."'";
         $res3 = mysqli_query($cn,$sql);
         if($res3){
             $frase='';
@@ -69,7 +69,7 @@ switch ($btn) {
 
         break;
     case 'X':
-        $sql = "DELETE FROM dialogos_dirigidos WHERE id='".$id."'";
+        $sql = "DELETE FROM ".$tabla_cliente." WHERE id='".$id."'";
         $res3 = mysqli_query($cn,$sql);
         
         if(mysqli_affected_rows($cn) > 0){
@@ -84,7 +84,7 @@ switch ($btn) {
         break;
     
     case 'activar':
-        $sql = "SELECT * FROM dialogos_dirigidos WHERE status='S'";
+        $sql = "SELECT * FROM ".$tabla_cliente." WHERE status='S'";
         $res3 = mysqli_query($cn,$sql);
         if( mysqli_num_rows($res3) > 0){
             echo "hay frases activas por lo que no se puede activar dos al mismo tiempo";
@@ -93,7 +93,7 @@ switch ($btn) {
                 <div class="miAlerta alert alert-danger" role="alert" id="alert_warning"><span>Hay Frases Activas aun no se puede activar dos... </span><button type="button" class="close">&times;</button></div>
             <?php
         }else{
-            echo $sql = "UPDATE dialogos_dirigidos SET status='S' WHERE id = '".$id."'";
+            echo $sql = "UPDATE ".$tabla_cliente." SET status='S' WHERE id = '".$id."'";
             $res4 = mysqli_query($cn,$sql);
             if($res3){
                 echo "Actulizado con exito";
@@ -108,7 +108,7 @@ switch ($btn) {
         }    
         break;
     case 'desactivar':
-        $sql = "UPDATE dialogos_dirigidos SET status='N' WHERE id = '".$id."'";
+        $sql = "UPDATE ".$tabla_cliente." SET status='N' WHERE id = '".$id."'";
         $res3 = mysqli_query($cn,$sql);
         if($res3){
             echo "Actualizado con exito";
@@ -186,7 +186,7 @@ switch ($btn) {
                 </thead>
                 <tbody>
                 <?php
-                $sql = "SELECT * FROM dialogos_dirigidos WHERE 1";
+                $sql = "SELECT * FROM ".$tabla_cliente." WHERE 1";
                 $res2 = mysqli_query($cn,$sql);
                 if($res2){
                     while($data = mysqli_fetch_array($res2)){
