@@ -1,0 +1,6 @@
+.miAlerta{
+    visibility: hidden;
+}
+.table, td, th {
+    padding: 0.1rem; 
+  }
