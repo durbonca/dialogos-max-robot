@@ -131,6 +131,10 @@ switch ($btn) {
 <body>
     <div class="container">
         <h1>Creación de nuevas frases</h1>
+        <form method="post">
+			<h1>Creación de nuevas frases</h1>
+			<div class="text-right"><button id="boton" class="btn btn-success" type="submit">Refrescar Pagina</button></div>
+		</form>
         <form action="index.php" method="post">
             <div class="form-group">
                 <div>
