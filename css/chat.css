@@ -1,0 +1,61 @@
+/* Chat contenedor */
+.chatbox {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  /* contenedor mensaje chat */
+  .mensage {
+    border-color: #ccc;
+    background-color: #ddd;
+  }
+  
+  .mensage.left {
+    float: left;
+  }
+
+  .mensage.right {
+    float: right;
+    text-align: right !important; 
+  }
+  
+  /* Clear floats */
+  .container::after {
+  content: "";
+  clear: both;
+  display: table;
+  }
+
+  /* Style images */
+  .chatbox img {
+    max-width: 10%;
+    padding: 0px;
+    margin-top: 0px;
+    border-radius: 50%;
+  }
+  
+  .chatbox img.left{
+    float: left;
+    margin-right: 20px;
+  }
+
+  /* Style the right image */
+  .chatbox img.right {
+    float: right;
+    margin-left: 20px;
+  }
+  
+  /* Style time text */
+  .time-right {
+    float: right;
+    color: #aaa;
+  }
+  
+  /* Style time text */
+  .time-left {
+    float: left;
+    color: #999;
+  }
