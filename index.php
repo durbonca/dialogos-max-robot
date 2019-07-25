@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>tabla</title>
-    <link rel="stylesheet" type="text/css" href="custom.css">
+    <link rel="stylesheet" type="text/css" href="css/custom.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="css/chat.css">
@@ -128,23 +128,29 @@ switch ($btn) {
     <div class="container-fluid">
         <div class="row">
             <div class="col-5">
-                <div>
-                    <form method="post">
-                        <h1>Creación de nuevas frases</h1>
-                        <div class="text-right"><button id="boton" class="btn btn-success" type="submit">Refrescar Pagina</button></div>
-                    </form>
-                    <form action="index.php" method="post">
-                    <div class="form-group">
-                        <div>
-                            <input type="hidden" name="id" value="<?php echo $id; ?>">
-                            <p>Dialogo</p>
-                            <input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
-                            </br>
-                            <p>Scripts</p>
-                        </div>
+                    <div>
+                        <form method="post">
+                            <h1>Creación de nuevas frases</h1>
+                          <!--  <div class="col text-right" style="aling-text:right; padding-bottom: 10px;"><button id="boton" class="btn btn-success" type="submit">Refrescar Pagina</button></div>-->
+                        </form>
+                            <div>
+                                <form action="index.php" method="post">
+                                <div class="container-fluid form-group">
+                                    <div class="row">
+                                        <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                        <div class="col-2">
+                                            Dialogo
+                                        </div> 
+                                        <div class="col-10">
+                                            <input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                     </div>
-                    
+
                         <div class="form-group">
+                        <p>Scripts</p>
                             <div>
                                 <select class="form-control" name='script'>
                                     <?php 
@@ -173,18 +179,18 @@ switch ($btn) {
                             <div class="text-right"><button id="boton" class="btn btn-success" name="btn" value="actualizar" type="submit">Actualizar frase</button></div>
                         <?php } ?> 
                     </form>
-                    </div>
+                    
                 
-                    <div class="chatbox" id="chatbox"> 
-                        <div class="chatbox mensage">
-                            <img src="images/usuarios.png" alt="avatarUser">
-                            <p>hola robot... como estas tu?</p>
-                            <span class="time-right">11:00</span>
+                    <div class="chatbox overflow-auto" id="chatbox"> 
+                        <div class="chatbox mensage left row">
+                            <img class="chatbox img left" src="images/usuarios.png" alt="avatarUser">
+                            <p>hola robot... como estas tu? </p>
+                            <span class="time-right"> 11:00</span>
                         </div>
-                        <div class="chatbox mensage">
-                            <img src="images/pbot.png" alt="AvatarRobot">
-                            <p>chevere! yo me encuentro genial!</p>
-                            <span class="time-right">11:02</span>
+                        <div class="chatbox mensage right row" style="display: flex; justify-content: flex-end">
+                                <p>chevere! yo me encuentro genial! </p>
+                                <span class="time-right"> 11:02</span>
+                                <img class="chatbox img right" src="images/pbot.png" alt="AvatarRobot">
                         </div>    
                     </div>
                     <div class="container">

@@ -13,27 +13,39 @@
     background-color: #ddd;
   }
   
-  /* Clear floats */
-  .container::after {
-    content: "";
-    clear: both;
-    display: table;
+  .mensage.left {
+    float: left;
+  }
+
+  .mensage.right {
+    float: right;
+    text-align: right !important; 
   }
   
+  /* Clear floats */
+  .container::after {
+  content: "";
+  clear: both;
+  display: table;
+  }
+
   /* Style images */
   .chatbox img {
-    float: left;
-    max-width: 60px;
-    width: 100%;
-    margin-right: 20px;
+    max-width: 10%;
+    padding: 0px;
+    margin-top: 0px;
     border-radius: 50%;
   }
   
+  .chatbox img.left{
+    float: left;
+    margin-right: 20px;
+  }
+
   /* Style the right image */
   .chatbox img.right {
     float: right;
     margin-left: 20px;
-    margin-right:0;
   }
   
   /* Style time text */
