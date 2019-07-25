@@ -1,3 +1,12 @@
+<?php
+
+include ("cls/clsConexion.php");
+
+$DbConect = new ConexionSQL();
+
+$btn=isset($_REQUEST['btn'])?$_REQUEST['btn']:null;
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -11,119 +20,6 @@
     <link rel="stylesheet" href="css/chat.css">
 </head>
 
-<?php
-include ("cls/clsConexion.php");
-
-$DbConect = new ConexionSQL();
-
-$tabla_cliente = "dialogos_dirigidos";
-
-$id = isset($_REQUEST['id'])?$_REQUEST['id']:null;
-$btn = isset($_REQUEST['btn'])?$_REQUEST['btn']:null;
-$frase = isset($_REQUEST['frase'])?$_REQUEST['frase']:null;
-$script = isset($_REQUEST['script'])?$_REQUEST['script']:null;
-
-switch ($btn) {
-    case 'agregar':
-        $sql = "INSERT INTO ".$tabla_cliente." (frase,script) VALUES('".$frase."',".$script.")";
-        $res3 = $DbConect->Consulta($sql);
-        if($res3){
-            echo "hay frases activas";
-            ?>
-                <div class="miAlerta alert alert-success" role="alert" id="alert_success"><span>Frase creada correctamente.</span><button type="button" class="close">&times;</button></div>
-            <?php
-        }else{
-            ?>
-                <div class="float alert alert-danger" role="alert"><span>Error al crear la frase.</span></div>
-            <?php
-        }    
-        break;
-    case 'editar':
-        $sql = "SELECT * FROM ".$tabla_cliente." WHERE id = '".$id."'";
-        $res3 = $DbConect->Consulta($sql);
-        $form = $DbConect->ExtraerDatos($res3);
-        $frase = $form['frase'];
-        $script = $form['script'];
-
-        break;
-
-    case 'actualizar':
-        $sql = "UPDATE ".$tabla_cliente." SET frase='".$frase."', script=".$script." WHERE id='".$id."'";
-        $res3 = $DbConect->Consulta($sql);
-        if($res3){
-            $frase='';
-            $script='';
-            echo "Actualizado con exito";
-        ?>
-            <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Actualizada Correctamente.</span><button type="button" class="close">&times;</button></div>
-        <?php
-        }else{
-            ?>
-                <div class="float alert alert-danger" role="alert"><span>Error al Actualizar Frase.</span></div>
-            <?php
-        }
-
-        break;
-    case 'X':
-        $sql = "DELETE FROM ".$tabla_cliente." WHERE id='".$id;
-        $res3 = $DbConect->Consulta($sql);
-        
-        if($DbConect->FilasAfectadas() > 0){
-            ?>
-                <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Eliminada.</span><button type="button" class="close">&times;</button></div>
-            <?php
-        }else{
-            ?>
-                <div class="float alert alert-danger" role="alert"><span>Error al eliminar la frase.</span></div>
-            <?php
-        }    
-        break;
-    
-    case 'activar':
-        $sql = "SELECT * FROM ".$tabla_cliente." WHERE status='S'";
-        $res3 = $DbConect->Consulta($sql);
-        if( $DbConect->nroreg($res3) > 0){
-            echo "hay frases activas por lo que no se puede activar dos al mismo tiempo";
-
-            ?>
-                <div class="miAlerta alert alert-danger" role="alert" id="alert_warning"><span>Hay Frases Activas aun no se puede activar dos... </span><button type="button" class="close">&times;</button></div>
-            <?php
-        }else{
-            $sql = "UPDATE ".$tabla_cliente." SET status='S' WHERE id = '".$id;
-            $res3 = $DbConect->Consulta($sql);
-            if($res3){
-                echo "Actulizado con exito";
-            ?>
-                <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Activada Correctamente.</span><button type="button" class="close">&times;</button></div>
-            <?php
-            }else{
-                ?>
-                    <div class="float alert alert-danger" role="alert"><span>Error al Activar Frase.</span></div>
-                <?php
-            }   
-        }    
-        break;
-    case 'desactivar':
-        $sql = "UPDATE ".$tabla_cliente." SET status='N' WHERE id = ".$id;
-        $res3 = $DbConect->Consulta($sql);
-        if($DbConect->FilasAfectadas()>0){
-            echo "Actualizado con exito";
-            ?>
-                <div class="miAlerta alert alert-success" role="alert" id="alert_warning"><span>Frase Desactivada Correctamente.</span><button type="button" class="close">&times;</button></div>
-            <?php
-        }else{
-            ?>
-                <div class="float alert alert-danger" role="alert"><span>Error al Desactivar Frase.</span></div>
-            <?php
-        }    
-        break;
-    default:
-        # code...
-        break;
-}
-
-
-?>
 <body style="background:rgb(48, 48, 48); color: white;">
     <div class="container-fluid">
         <div class="row">
@@ -141,7 +37,7 @@ switch ($btn) {
                                                     Dialogo
                                                 </div> 
                                                 <div class="col-10">
-                                                    <input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
+                                                    <input class="form-control" type="text" name='frase'>
                                                 </div>
                                             </div>
                             </div>
@@ -210,31 +106,46 @@ switch ($btn) {
         $(document).ready(function(){
             var p={};
             setInterval(function(){ 
-                VerLista();
-                VerChat();
+                VerLista(p);
+                VerChat(p);
             }, 1000);
 
             var vtn = $(window).height();
             vtn = (vtn * 90) / 100;
             $("#ListaDialogos").css({"height": vtn + 'px'});
+            
+            alfinal();
+
+            $("#activar").on("click",()=>{
+                alert("hola");
+            });
 
             $("#botonchat").click(()=>{
                 p = {
                         mensaje: $("#mensaje").val(),
                         btn:'Enviar'
                     };
-                    VerChat(p);
+                VerChat(p);
+                alfinal();
+                $("#mensaje").val("");
             })
 
-            function VerLista(){
+            function alfinal(){
+                var altura = 20000;
+                $("#chatbox").animate({scrollTop:altura+"px"});
+                
+            }
+
+            function VerLista(p){
                 $.ajax({
                     async:true,
                     type:"POST",
+                    data:p,
                     cache: false,
-                    success: function (data) {
+                    success: (data)=> {
                         $("#ListaDialogos").html(data);
                     },
-                    error: function() {
+                    error: () =>{
                         $("#ListaDialogos").html("<center><h1>Error al Cargar Lista</h1><center>");
                     },
                     url: './lista_dialogos.php'
@@ -247,15 +158,16 @@ switch ($btn) {
                     type:"POST",
                     data:p,
                     cache: false,
-                    success: function (data) {
+                    success: (data) => {
                         $("#chatbox").html(data);
                     },
-                    error: function() {
+                    error: () => {
                         $("#chatbox").html("<center><h1>Error al Cargar Lista</h1><center>");
                     },
                     url: './lista_chat.php'
                 });
             }
+
 
         });  
     </script>
