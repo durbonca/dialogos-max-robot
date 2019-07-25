@@ -128,64 +128,61 @@ switch ($btn) {
     <div class="container-fluid">
         <div class="row">
             <div class="col-5">
-                    <div>
-                        <form method="post">
-                            <div class="row">
-                                <h1>Creación de nuevas frases</h1>
+                <div class="row">
+                    <h1>Creación de nuevas frases</h1>
+                </div>
+                <div class="row">
+                    <form action="index.php" method="post">
+                        <div class="row">
+                            <div class="container-fluid form-group">
+                                            <div class="row">
+                                                <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                                <div class="col-2">
+                                                    Dialogo
+                                                </div> 
+                                                <div class="col-10">
+                                                    <input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
+                                                </div>
+                                            </div>
                             </div>
-                          <!--  <div class="col text-right" style="aling-text:right; padding-bottom: 10px;"><button id="boton" class="btn btn-success" type="submit">Refrescar Pagina</button></div>-->
-                        </form>
-                            <div>
-                                <form action="index.php" method="post">
-                                <div class="container-fluid form-group">
-                                    <div class="row">
-                                        <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                        <div class="col-2">
-                                            Dialogo
-                                        </div> 
-                                        <div class="col-10">
-                                            <input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="container-fluid form-group">
+                                            <div class="row">
+                                                <div class="col-2"><p>Scripts</p></div>
+                                                <div class="col-10">
+                                                    <select class="form-control" name='script'>
+                                                        <?php 
+                                                        $sql = "SELECT id,nombre FROM scripts WHERE status = 'S'";
+                                                        $res1 = $DbConect->Consulta($sql);
+                                                        if($res1){
+                                                            while($opt = $DbConect->ExtraerDatos($res1)){
+                                                                $x= "";
+                                                                if($script==$opt['script']){
+                                                                    $x="selected";
+                                                                }
+                                                                ?>
+                                                                
+                                                                <option value="<?php echo $opt['id']; ?>" $x><?php echo $opt['nombre']; ?></option>
+
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>    
                             </div>
-                    </div>
 
-                        <div class="container-fluid form-group">
-                            <div class="row">
-                                <div class="col-2"><p>Scripts</p></div>
-                                <div class="col-10">
-                                    <select class="form-control" name='script'>
-                                        <?php 
-                                        $sql = "SELECT id,nombre FROM scripts WHERE status = 'S'";
-                                        $res1 = $DbConect->Consulta($sql);
-                                        if($res1){
-                                            while($opt = $DbConect->ExtraerDatos($res1)){
-                                                $x= "";
-                                                if($script==$opt['script']){
-                                                    $x="selected";
-                                                }
-                                                ?>
-                                                
-                                                <option value="<?php echo $opt['id']; ?>" $x><?php echo $opt['nombre']; ?></option>
-
-                                                <?php
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>    
+                        </div>                    
+                        <div class="text-right">    
+                            <?php  if($btn!="editar"){  ?>
+                                <button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button>
+                            <?php }else{ ?>
+                                <button id="boton" class="btn btn-success" name="btn" value="actualizar" type="submit">Actualizar frase</button>
+                            <?php } ?> 
                         </div>
-                        <?php  if($btn!="editar"){  ?>
-                            <div class="text-right"><button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button></div>
-                        <?php }else{ ?>
-                            <div class="text-right"><button id="boton" class="btn btn-success" name="btn" value="actualizar" type="submit">Actualizar frase</button></div>
-                        <?php } ?> 
                     </form>
-                    
-                
-                    <div class="chatbox overflow-auto" id="chatbox"> 
+                </div>
+                <div class="chatbox overflow-auto" id="chatbox"> 
                         <div class="chatbox mensage left row">
                             <img class="chatbox img left" src="images/usuarios.png" alt="avatarUser">
                             <p>hola robot... como estas tu? </p>
@@ -206,9 +203,8 @@ switch ($btn) {
                                 <span class="time-right"> 11:02</span>
                                 <img class="chatbox img right" src="images/pbot.png" alt="AvatarRobot">
                         </div>
-
-                    </div>
-                    <div class="container">
+                </div>
+                <div class="container">
                         <div class="row">
                             <div class="col-10">
                                 <input class="form-control" type="text" name='chat' value="">
@@ -217,60 +213,45 @@ switch ($btn) {
                                 <div class="text-right"><button id="botonchat" class="btn btn-success" name="btn" value="chat" type="submit">Chat</button></div>
                             </div>
                         </div>
-                    </div>        
-                </div>    
+                </div>      
+            </div>    
             <div class="col-7">
                 <h1>Frases actuales</h1>
-                <div class="table-responsive">
-                    <table class="table-sm">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%;">ID</th>
-                                <th>FRASE</th>
-                                <th>ACCION</th>
-                                <th style="width: 10%;">ACTIVO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        $sql = "SELECT d.*,s.nombre FROM ".$tabla_cliente." d INNER JOIN scripts s ON d.script=s.id";
-                        $res2 = $DbConect->Consulta($sql);
-                        if($res2){
-                            while($data = $DbConect->ExtraerDatos($res2)){
-                            ?>
-                                <tr>
-                                    <td><?php echo $data['id'] ?></td>
-                                    <td><?php echo $data['frase']; ?></td>
-                                    <td><?php echo $data['nombre']; ?></td>
-                                    <form action="index.php" method="post">
-                                        <td>
-                                            <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
-
-                                            <div class="d-flex text-white">
-                                                <?php if($data['status']=="N"){ ?>
-                                                <div class="p-1"><button type="submit" name="btn" value="activar" class="btn btn-success">🗣️</button></div>
-                                                <?php }else{ ?>
-                                                <div class="p-1"><button type="submit" name="btn" value="desactivar" class="btn btn-warning">🗣️</button></div>
-                                                <?php } ?>
-                                                <div class="p-1"><button type="submit" name="btn" value="editar" class="btn btn-primary">📝</button></div>
-                                                <div class="p-1"><button type="submit" name="btn" value="X" class="btn btn-danger">✖️</button></div>
-                                            </div>
-
-                                        </td>
-                                    </form>
-                                </tr>
-                            <?php
-                            }
-                        }
-                        ?>
-                        </tbody>
-                    </table>
+                <div class="table-responsive" style="overflow: auto;" id="ListaDialogos">
+                    lista de contenido
+                </div>
             </div>
         </div>
     </div>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/consult.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            setTimeout(function(){ 
+                VerLista();
+            }, 1000);
+
+
+            function VerLista(){
+                $.ajax({
+                        async:true,
+                        type:"POST",
+                        cache: false,
+                        success: function (data) {
+                            $("#ListaDialogos").html(data);
+                        },
+                        error: function() {
+                            $("#ListaDialogos").html("<center><h1>Error al Cargar Lista</h1><center>");
+                        },
+                        beforeSend: function(){
+                            $("#ListaDialogos").html("<center><br><br><img src='images/cargando3.gif'><center>");
+                        },
+                        url: './lista_dialogos.php'
+                });
+            }
+
+        });  
+    </script>
 </body>
 
 </html>
