@@ -129,7 +129,7 @@ switch ($btn) {
         <div class="row">
             <div class="col-5">
                 <div class="row">
-                    <h1>Creación de nuevas frases</h1>
+                    <h3>Creación de nuevas frases</h3>
                 </div>
                 <div class="row">
                     <form action="index.php" method="post">
@@ -183,31 +183,12 @@ switch ($btn) {
                     </form>
                 </div>
                 <div class="chatbox overflow-auto" id="chatbox"> 
-                        <div class="chatbox mensage left row">
-                            <img class="chatbox img left" src="images/usuarios.png" alt="avatarUser">
-                            <p>hola robot... como estas tu? </p>
-                            <span class="time-right"> 11:00</span>
-                        </div>
-                        <div class="chatbox mensage right row" style="display: flex; justify-content: flex-end">
-                                <p>chevere! yo me encuentro genial! </p>
-                                <span class="time-right"> 11:02</span>
-                                <img class="chatbox img right" src="images/pbot.png" alt="AvatarRobot">
-                        </div>
-                        <div class="chatbox mensage left row">
-                            <img class="chatbox img left" src="images/usuarios.png" alt="avatarUser">
-                            <p>me alegra escucharlo </p>
-                            <span class="time-right"> 11:00</span>
-                        </div>
-                        <div class="chatbox mensage right row" style="display: flex; justify-content: flex-end">
-                                <p>gracias me gusta hablar contigo </p>
-                                <span class="time-right"> 11:02</span>
-                                <img class="chatbox img right" src="images/pbot.png" alt="AvatarRobot">
-                        </div>
+                        
                 </div>
                 <div class="container">
                         <div class="row">
                             <div class="col-10">
-                                <input class="form-control" type="text" name='chat' value="">
+                                <input class="form-control" type="text" name='chat' id="mensaje" value="">
                             </div>
                             <div class="col-2">    
                                 <div class="text-right"><button id="botonchat" class="btn btn-success" name="btn" value="chat" type="submit">Chat</button></div>
@@ -216,9 +197,9 @@ switch ($btn) {
                 </div>      
             </div>    
             <div class="col-7">
-                <h1>Frases actuales</h1>
-                <div class="table-responsive" style="overflow: auto;" id="ListaDialogos">
-                    lista de contenido
+                <h3>Frases actuales</h3>
+                <div class="overflow-auto" id="ListaDialogos">
+                    
                 </div>
             </div>
         </div>
@@ -227,26 +208,52 @@ switch ($btn) {
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            setTimeout(function(){ 
+            var p={};
+            setInterval(function(){ 
                 VerLista();
+                VerChat();
             }, 1000);
 
+            var vtn = $(window).height();
+            vtn = (vtn * 90) / 100;
+            $("#ListaDialogos").css({"height": vtn + 'px'});
+
+            $("#botonchat").click(()=>{
+                p = {
+                        mensaje: $("#mensaje").val(),
+                        btn:'Enviar'
+                    };
+                    VerChat(p);
+            })
 
             function VerLista(){
                 $.ajax({
-                        async:true,
-                        type:"POST",
-                        cache: false,
-                        success: function (data) {
-                            $("#ListaDialogos").html(data);
-                        },
-                        error: function() {
-                            $("#ListaDialogos").html("<center><h1>Error al Cargar Lista</h1><center>");
-                        },
-                        beforeSend: function(){
-                            $("#ListaDialogos").html("<center><br><br><img src='images/loading.gif'><center>");
-                        },
-                        url: './lista_dialogos.php'
+                    async:true,
+                    type:"POST",
+                    cache: false,
+                    success: function (data) {
+                        $("#ListaDialogos").html(data);
+                    },
+                    error: function() {
+                        $("#ListaDialogos").html("<center><h1>Error al Cargar Lista</h1><center>");
+                    },
+                    url: './lista_dialogos.php'
+                });
+            }
+
+            function VerChat(p){
+                $.ajax({
+                    async:true,
+                    type:"POST",
+                    data:p,
+                    cache: false,
+                    success: function (data) {
+                        $("#chatbox").html(data);
+                    },
+                    error: function() {
+                        $("#chatbox").html("<center><h1>Error al Cargar Lista</h1><center>");
+                    },
+                    url: './lista_chat.php'
                 });
             }
 
