@@ -244,7 +244,7 @@ switch ($btn) {
                             $("#ListaDialogos").html("<center><h1>Error al Cargar Lista</h1><center>");
                         },
                         beforeSend: function(){
-                            $("#ListaDialogos").html("<center><br><br><img src='images/cargando3.gif'><center>");
+                            $("#ListaDialogos").html("<center><br><br><img src='images/loading.gif'><center>");
                         },
                         url: './lista_dialogos.php'
                 });
