@@ -124,79 +124,90 @@ switch ($btn) {
 
 
 ?>
-<body style="background:rgb(48, 48, 48); color: white;">
+<body class="container-fluid" style="background:rgb(48, 48, 48); color: white;"><br>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-5">
-                <div class="row">
-                    <h3>Creación de nuevas frases</h3>
-                </div>
-                <div class="row">
-                    <form action="index.php" method="post">
-                        <div class="row">
-                            <div class="container-fluid form-group">
-                                            <div class="row">
-                                                <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                                <div class="col-2">
-                                                    Dialogo
-                                                </div> 
-                                                <div class="col-10">
-                                                    <input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
+            <div class="container col-5">
+                <div id="crear_frases">
+                    <div class="row">
+                        <h3>Creación de nuevas frases</h3>
+                    </div>
+                    <div class="row">
+                        <form action="index.php" method="post">
+                            <div class="row">
+                                <div class="container-fluid form-group">
+                                                <div class="row">
+                                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                                    <div class="col-2">
+                                                        Dialogo
+                                                    </div> 
+                                                    <div class="col-10">
+                                                        <input class="form-control" type="text" name='frase' value="<?php echo $frase; ?>">
+                                                    </div>
                                                 </div>
-                                            </div>
-                            </div>
-                            <div class="container-fluid form-group">
-                                            <div class="row">
-                                                <div class="col-2"><p>Scripts</p></div>
-                                                <div class="col-10">
-                                                    <select class="form-control" name='script'>
-                                                        <?php 
-                                                        $sql = "SELECT id,nombre FROM scripts WHERE status = 'S'";
-                                                        $res1 = $DbConect->Consulta($sql);
-                                                        if($res1){
-                                                            while($opt = $DbConect->ExtraerDatos($res1)){
-                                                                $x= "";
-                                                                if($script==$opt['script']){
-                                                                    $x="selected";
+                                </div>
+                                <div class="container-fluid form-group">
+                                                <div class="row">
+                                                    <div class="col-2"><p>Scripts</p></div>
+                                                    <div class="col-6">
+                                                        <select class="form-control" name='script'>
+                                                            <?php 
+                                                            $sql = "SELECT id,nombre FROM scripts WHERE status = 'S'";
+                                                            $res1 = $DbConect->Consulta($sql);
+                                                            if($res1){
+                                                                while($opt = $DbConect->ExtraerDatos($res1)){
+                                                                    $x= "";
+                                                                    if($script==$opt['script']){
+                                                                        $x="selected";
+                                                                    }
+                                                                    ?>
+                                                                    
+                                                                    <option value="<?php echo $opt['id']; ?>" $x><?php echo $opt['nombre']; ?></option>
+
+                                                                    <?php
                                                                 }
-                                                                ?>
-                                                                
-                                                                <option value="<?php echo $opt['id']; ?>" $x><?php echo $opt['nombre']; ?></option>
-
-                                                                <?php
                                                             }
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                            </div>    
-                            </div>
+                                                            ?>
+                                                        </select>
 
-                        </div>                    
-                        <div class="text-right">    
-                            <?php  if($btn!="editar"){  ?>
-                                <button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button>
-                            <?php }else{ ?>
-                                <button id="boton" class="btn btn-success" name="btn" value="actualizar" type="submit">Actualizar frase</button>
-                            <?php } ?> 
-                        </div>
-                    </form>
+                                                    </div>
+                                                    
+                                                    <div class="col-4 text-right">    
+                                                        <?php  if($btn!="editar"){  ?>
+                                                            <button id="boton" class="btn btn-primary" name="btn" value="agregar" type="button">Crear frase</button>
+                                                        <?php }else{ ?>
+                                                            <button id="boton" class="btn btn-success" name="btn" value="actualizar" type="button">Actualizar frase</button>
+                                                        <?php } ?> 
+                                                        </div>
+
+
+                                                    
+                                                </div>    
+                                </div>
+
+                                
+
+                            </div>                    
+                            
+                        </form>
+                    </div>
                 </div>
-                <div class="chatbox overflow-auto" id="chatbox"> 
-                        
-                </div>
-                <div class="container">
-                        <div class="row">
-                            <div class="col-10">
-                                <input class="form-control" type="text" name='chat' id="mensaje" value="">
+                <div class="container chat" id="chat">
+                    <div class="chatbox overflow-auto" id="chatbox">         
+                    </div>
+                    <div class="container">
+                            <div class="row">
+                                <div class="col-10">
+                                    <input class="form-control" type="text" name='chat' id="mensaje" value="">
+                                </div>
+                                <div class="col-2">    
+                                    <div class="text-right"><button id="botonchat" class="btn btn-success" name="btn" value="chat" type="button">Chat</button></div>
+                                </div>
                             </div>
-                            <div class="col-2">    
-                                <div class="text-right"><button id="botonchat" class="btn btn-success" name="btn" value="chat" type="submit">Chat</button></div>
-                            </div>
-                        </div>
-                </div>      
+                    </div> 
+                </div>         
             </div>    
-            <div class="col-7">
+            <div class="col-7" style="padding-left: 40px;">
                 <h3>Frases actuales</h3>
                 <div class="overflow-auto" id="ListaDialogos">
                     
@@ -215,8 +226,17 @@ switch ($btn) {
             }, 1000);
 
             var vtn = $(window).height();
-            vtn = (vtn * 90) / 100;
+            vtn = (vtn * 85) / 100;
             $("#ListaDialogos").css({"height": vtn + 'px'});
+
+            var vtn_crearFrases = $(window).height();
+            vtn_crearFrases = (vtn * 30) / 100;
+            $("#crear_frases").css({"height": vtn_crearFrases + 'px'});
+
+            var vtn_chatbox = $(window).height();
+            vtn_chatbox = (vtn * 80) / 100;
+            $("#chatbox").css({"height": vtn_chatbox + 'px'});
+
 
             $("#botonchat").click(()=>{
                 p = {
