@@ -130,7 +130,9 @@ switch ($btn) {
             <div class="col-5">
                     <div>
                         <form method="post">
-                            <h1>Creación de nuevas frases</h1>
+                            <div class="row">
+                                <h1>Creación de nuevas frases</h1>
+                            </div>
                           <!--  <div class="col text-right" style="aling-text:right; padding-bottom: 10px;"><button id="boton" class="btn btn-success" type="submit">Refrescar Pagina</button></div>-->
                         </form>
                             <div>
@@ -149,29 +151,31 @@ switch ($btn) {
                             </div>
                     </div>
 
-                        <div class="form-group">
-                        <p>Scripts</p>
-                            <div>
-                                <select class="form-control" name='script'>
-                                    <?php 
-                                    $sql = "SELECT id,nombre FROM scripts WHERE status = 'S'";
-                                    $res1 = $DbConect->Consulta($sql);
-                                    if($res1){
-                                        while($opt = $DbConect->ExtraerDatos($res1)){
-                                            $x= "";
-                                            if($script==$opt['script']){
-                                                $x="selected";
-                                            }
-                                            ?>
-                                            
-                                            <option value="<?php echo $opt['id']; ?>" $x><?php echo $opt['nombre']; ?></option>
+                        <div class="container-fluid form-group">
+                            <div class="row">
+                                <div class="col-2"><p>Scripts</p></div>
+                                <div class="col-10">
+                                    <select class="form-control" name='script'>
+                                        <?php 
+                                        $sql = "SELECT id,nombre FROM scripts WHERE status = 'S'";
+                                        $res1 = $DbConect->Consulta($sql);
+                                        if($res1){
+                                            while($opt = $DbConect->ExtraerDatos($res1)){
+                                                $x= "";
+                                                if($script==$opt['script']){
+                                                    $x="selected";
+                                                }
+                                                ?>
+                                                
+                                                <option value="<?php echo $opt['id']; ?>" $x><?php echo $opt['nombre']; ?></option>
 
-                                            <?php
+                                                <?php
+                                            }
                                         }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>    
                         </div>
                         <?php  if($btn!="editar"){  ?>
                             <div class="text-right"><button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button></div>
@@ -191,7 +195,18 @@ switch ($btn) {
                                 <p>chevere! yo me encuentro genial! </p>
                                 <span class="time-right"> 11:02</span>
                                 <img class="chatbox img right" src="images/pbot.png" alt="AvatarRobot">
-                        </div>    
+                        </div>
+                        <div class="chatbox mensage left row">
+                            <img class="chatbox img left" src="images/usuarios.png" alt="avatarUser">
+                            <p>me alegra escucharlo </p>
+                            <span class="time-right"> 11:00</span>
+                        </div>
+                        <div class="chatbox mensage right row" style="display: flex; justify-content: flex-end">
+                                <p>gracias me gusta hablar contigo </p>
+                                <span class="time-right"> 11:02</span>
+                                <img class="chatbox img right" src="images/pbot.png" alt="AvatarRobot">
+                        </div>
+
                     </div>
                     <div class="container">
                         <div class="row">
