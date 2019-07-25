@@ -174,9 +174,15 @@ switch ($btn) {
                                                     
                                                     <div class="col-4 text-right">    
                                                         <?php  if($btn!="editar"){  ?>
+<<<<<<< HEAD
                                                             <button id="boton" class="btn btn-primary" name="btn" value="agregar" type="button">Crear frase</button>
                                                         <?php }else{ ?>
                                                             <button id="boton" class="btn btn-success" name="btn" value="actualizar" type="button">Actualizar frase</button>
+=======
+                                                            <button id="boton" class="btn btn-primary" name="btn" value="agregar" type="submit">Crear frase</button>
+                                                        <?php }else{ ?>
+                                                            <button id="boton" class="btn btn-success" name="btn" value="actualizar" type="submit">Actualizar frase</button>
+>>>>>>> b03d95c0a3e49a705c72fb41850c85177b8850cb
                                                         <?php } ?> 
                                                         </div>
 
