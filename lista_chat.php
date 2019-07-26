@@ -9,7 +9,8 @@ $mensaje=isset($_REQUEST['mensaje'])?$_REQUEST['mensaje']:null;
 if($btn=="Enviar"){
     $sql="INSERT INTO chat (usuario,mensaje) VALUES('Operador','".$mensaje."')";
     $DbConect->Consulta($sql);
-    
+    unset($btn);
+    unset($mensaje);
 }
 ?>
 

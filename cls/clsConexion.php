@@ -8,7 +8,7 @@ class ConexionSQL {
     private $manejador;
     private $dbase;
 
-    function __construct ($servidor="localhost",$usuarios="root",$pwd="",$conexion=""){    
+    function __construct ($servidor="localhost",$usuarios="scvcpp",$pwd="scvcpp113947",$conexion=""){    
         $this->conexion = $conexion;
         $this->servidor = $servidor;
         $this->usuarios = $usuarios;

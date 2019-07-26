@@ -1,8 +1,7 @@
  
-$(document).ready(function(){
-            
-    var p={};
+
     setInterval(function(){ 
+        var p={};
         VerLista(p);
         VerChat(p);
     }, 1000);
@@ -19,13 +18,73 @@ $(document).ready(function(){
     vtn_chatbox = (vtn * 80) / 100;
     $("#chatbox").css({"height": vtn_chatbox + 'px'});
 
-    alfinal();
-
-    $("#activar").on("click",()=>{
-        alert("hola");
+    
+    $(document).on("click","button.activar",function(e){
+        e.stopPropagation();
+        var cod = $(this).attr("id").substring(1);
+        var p = {btn:"activar",id:cod};
+        VerLista(p);
     });
 
-    $("#botonchat").click(()=>{
+    $(document).on("click","button.desactivar",function(e){
+        e.stopPropagation();
+        var cod = $(this).attr("id").substring(1);
+        var p = {btn:"desactivar",id:cod};
+        VerLista(p);
+    });
+    
+    $(document).on("click","button.eliminar",function(e){
+        e.stopPropagation();
+        var cod = $(this).attr("id").substring(1);
+        var p = {btn:"eliminar",id:cod};
+        VerLista(p);
+    });
+
+    $(document).on("click","button.editar",function(e){
+        e.stopPropagation();
+        var self = $(this);
+        var id = self.data("id");
+        var frase = self.data("frase");
+        var script = self.data('script');
+
+        $("#idfrase").val(id);
+        $("#frase").val(frase);
+        $("#optscript").val(script);
+
+        $("#agregar").hide();
+        $("#actualizar").show();
+    });
+
+    $("#actualizar").on("click",function(e){
+        var p = {
+            id : $("#idfrase").val(),
+            frase:$("#frase").val(),
+            script:$("#optscript option:selected").val(),
+            btn: "actualizar"
+        };
+        VerLista(p);
+         
+        $("#actualizar").hide();
+        $("#agregar").show();
+        $("#idfrase").val("");
+        $("#frase").val("");
+        $("#optscript").val(1);
+        
+    });
+
+    $("#agregar").on("click",function(e){
+        e.stopPropagation();
+        p = {
+            frase: $("#frase").val(),
+            script:$("#optscript option:selected").val(),
+            btn:'agregar'
+        };
+        VerLista(p);
+        $("#frase").val("");
+        $("#optscript").val(1);
+    });
+    $("#botonchat").on("click",function(e){
+        e.stopPropagation();
         p = {
             mensaje: $("#mensaje").val(),
             btn:'Enviar'
@@ -33,7 +92,7 @@ $(document).ready(function(){
         VerChat(p);
         alfinal();
         $("#mensaje").val("");
-    })
+    });
 
     function alfinal(){
         var altura = 20000;
@@ -72,5 +131,3 @@ $(document).ready(function(){
             url: './lista_chat.php'
         });
     }
-    
-}); 
