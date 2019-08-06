@@ -94,6 +94,21 @@
         $("#mensaje").val("");
     });
 
+    $("#mensaje").on("keypress",function(e){
+        e.stopPropagation();
+        if(e.which === 13)
+        {
+            p = {
+                mensaje: $("#mensaje").val(),
+                btn:'Enviar'
+            };
+        
+            VerChat(p);
+            alfinal();
+            $("#mensaje").val("");
+        }
+    });
+
     function alfinal(){
         var altura = 20000;
         $("#chatbox").animate({scrollTop:altura+"px"});
@@ -124,10 +139,17 @@
             cache: false,
             success: (data) => {
                 $("#chatbox").html(data);
+                alfinal();
             },
             error: () => {
                 $("#chatbox").html("<center><h1>Error al Cargar Lista</h1><center>");
             },
             url: './lista_chat.php'
         });
+    }
+
+    function alfinal(){
+        var altura = 20000000000;
+        $("#chatbox").animate({scrollTop:altura+"px"});
+        
     }

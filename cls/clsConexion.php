@@ -18,9 +18,9 @@ class ConexionSQL {
     }
 
     public function Consulta($sql) {
-        
         if ($this->manejador == "Mysql") {
             $this->conexion = mysql_connect($this->servidor, $this->usuarios, $this->pwd);
+			mysql_set_charset("UTF8", $this->conexion);
             if (!$this->conexion) {
                 return false;
             } else {
@@ -33,10 +33,13 @@ class ConexionSQL {
         }
         if ($this->manejador == "MariaDB") {
             $this->conexion = new mysqli($this->servidor, $this->usuarios, $this->pwd, $this->dbase);
+			$this->conexion->set_charset("utf8");
+
             $resultado = mysqli_query($this->conexion, $sql);
         }
         if ($this->manejador == "Mysqli") {
             $this->conexion = new mysqli($this->servidor, $this->usuarios, $this->pwd, $this->dbase);
+			$this->conexion->set_charset("utf8");
             $resultado = mysqli_query($this->conexion, $sql);
         }
 
